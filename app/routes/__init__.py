@@ -94,7 +94,7 @@ def edit_ticket(ticket_id):
         return redirect(url_for('main.view_tickets'))
     return render_template("edit_ticket.html", ticket=ticket)
 
-@main.route("/delete-ticket/<int:ticket_id>", methods=['POST', 'GET'])
+@main.route("/delete-ticket/<int:ticket_id>", methods=['POST'])
 @login_required
 def delete_ticket(ticket_id):
     ticket = Ticket.query.get_or_404(ticket_id)

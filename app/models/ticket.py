@@ -12,3 +12,6 @@ class Ticket(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     responses = db.relationship('Response', backref='ticket', lazy=True, cascade='all, delete-orphan')
+
+
+
