@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket detail</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h2>Ticket Detail</h2>
+
+    <p><strong>Title:</strong> {{ ticket.title }}</p>
+    <p><strong>Urgency:</strong> {{ 'Urgent' if ticket.is_urgent else 'Normal' }}</p>
+    <p><strong>Status:</strong> {{ ticket.status }} </p>
+    <p><strong>Description:</strong> {{ ticket.description }}</p>
+    <p><small>Created: {{ ticket.created_at.strftime('%Y-%m-%d %H:%M') }}</small></p>
+
+    <hr>
+    <h3>Responses</h3>
+
+    {% if ticket.responses %}
+    <ul>
+        {% for r in ticket.responses %}
+        <li>
+            <p>{{ r.message }}</p>
+            <small>By: {{ r.agent.username }} at {{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No responses yet.</p>
+    {% endif %}
+
+    {% if current_user.role == 'agent' %}
+    <hr>
+    <h3>Add a response</h3>
+    <form method="POST" action="{{ url_for('main.respond_ticket', ticket_id=ticket.id) }}">
+        <textarea name="message" required rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Submit Response</button>
+    </form>
+    {% endif %}
+
+    {% if current_user.role == 'agent' %}
+    <hr>
+    <h3>Change status</h3>
+    <form method="POST" action="{{ url_for('main.update_ticket_status', ticket_id=ticket.id) }}">
+        <select name="status" required>
+        <option value="open"        {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+        <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In progress</option>
+        <option value="resolved"    {% if ticket.status == 'resolved' %}selected{% endif %}>Resolved</option>
+        </select>
+        <button type="submit">Update</button>
+    </form>
+    {% endif %}
+
+
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            {% if category == 'success' %}
+              <li style="color: green;">{{ message }}</li>
+            {% elif category == 'danger' %}
+              <li style="color: red;">{{ message }}</li>
+            {% else %}
+              <li>{{ message }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+    <h1>¡Funciona la app de tickets!</h1>
+
+  <nav>
+      {% if current_user.is_authenticated %}
+          <p>Welcome, {{ current_user.username }} ({{ current_user.role }})</p>
+          <a href="{{ url_for('main.index') }}">Home</a> |
+          <a href="{{ url_for('main.view_tickets') }}">My Tickets</a> |
+          <a href="{{ url_for('main.create_ticket') }}">Create Ticket</a> |
+          <a href="{{ url_for('main.logout') }}">Logout</a>
+      {% else %}
+          <a href="{{ url_for('main.login') }}">Login</a> |
+          <a href="{{ url_for('main.register') }}">Register</a>
+      {% endif %}
+  </nav>
+  <hr>
+
+</body>
+</html>

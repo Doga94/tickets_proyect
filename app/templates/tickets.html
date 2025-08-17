@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h2>Your Tickets</h2>
+
+    <!-- 🔽 LINKS DE FILTRO AQUÍ -->
+    <p>
+        Filter:
+        <a href="{{ url_for('main.view_tickets') }}">All</a> |
+        <a href="{{ url_for('main.view_tickets', status='open') }}">Open</a> |
+        <a href="{{ url_for('main.view_tickets', status='in_progress') }}">In progress</a> |
+        <a href="{{ url_for('main.view_tickets', status='resolved') }}">Resolved</a>
+    </p>
+    <!-- 🔼 -->
+
+    {% if tickets %}
+        <ul>
+            {% for ticket in tickets %}
+                <li>
+                    <strong><a href="{{ url_for('main.ticket_detail', ticket_id=ticket.id) }}">{{ ticket.title }}</a></strong>
+                    - {{ 'Urgent' if ticket.is_urgent else 'Normal' }} |
+                    Status: {{ ticket.status }}<br>
+                    {{ ticket.description }}<br>
+                    <small>Created: {{ ticket.created_at.strftime('%Y-%m-%d %H:%M') }}</small><br>
+                    {% if current_user.role == 'agent' %}
+                        <a href="{{ url_for('main.ticket_detail', ticket_id=ticket.id) }}">Open</a> |
+                        <a href="{{ url_for('main.delete_ticket', ticket_id=ticket.id) }}">Delete</a>
+                    {% elif ticket.author.id == current_user.id %}
+                        <a href="{{ url_for('main.edit_ticket', ticket_id=ticket.id) }}">Edit</a> |
+                        <a href="{{ url_for('main.delete_ticket', ticket_id=ticket.id) }}">Delete</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tickets found.</p>
+    {% endif %}
+    {% endblock %}
+
+</body>
+</html>

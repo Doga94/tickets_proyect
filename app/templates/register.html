@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register New Account</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            {% if category == 'success' %}
+              <li style="color: green;">{{ message }}</li>
+            {% elif category == 'danger' %}
+              <li style="color: red;">{{ message }}</li>
+            {% else %}
+              <li>{{ message }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    
+    <form method="POST">
+        <label for="">Username:</label><br>
+        <input type="text" name="username" required><br>
+
+        <label for="">Email:</label><br>
+        <input type="email" name="email" required><br>
+
+        <label for="">Password:</label><br>
+        <input type="password" name="password" required><br>
+
+        <label for="">Role:</label><br>
+        <select name="role" id="">
+            <option value="user">User</option>
+            <option value="agent">Agent</option>
+        </select><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

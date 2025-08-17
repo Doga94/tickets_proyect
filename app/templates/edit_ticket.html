@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit ticket</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h2>Edit Ticket</h2>
+    <form method="POST">
+        <label>Title:</label><br>
+        <input type="text" name="title" value="{{ ticket.title }}" required><br>
+
+        <label>Description:</label><br>
+        <textarea name="description" required>{{ ticket.description }}</textarea><br>
+
+        <label>
+            <input type="checkbox" name="is_urgent" {% if ticket.is_urgent %}checked{% endif %}>
+            Mark as urgent
+        </label><br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respond ticket</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h2>Respond to Ticket</h2>
+
+    <p><strong>Title:</strong> {{ ticket.title }}</p>
+    <p><strong>Description:</strong> {{ ticket.description }}</p>
+
+    <form method="POST">
+        <label>Your response (not saved yet):</label><br>
+        <textarea name="response" rows="4" cols="40"></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    {% endblock %}
+</body>
+</html>
